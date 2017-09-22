@@ -4,18 +4,8 @@ import json
 from tornado import websocket, web, ioloop
 
 HOST = 'http://192.168.100.7:8888'
-users = []
-errors = {
-    'username_error': {
-        'error': 'username_error',
-        'note': ''
-    },
-    'recipient_error': {
-        'error': 'recipient_error',
-        'note': ''
-    }
-}
-notice = {
+USERS = []
+NOTICE = {
     'connect_user': {
         'user': {
             'connect': 'user_name'
@@ -25,9 +15,13 @@ notice = {
         'user': {
             'disconnect': 'user_name'
         }
+    },
+    'username_received': {
+        'user_name': 'user_name'
     }
 }
-available_user_names = {
+#ToDo: name generator or give the user the ability to specify a name
+AVAILABLE_USER_NAMES = {
     'voluptate', 'deleniti', 'consequuntur', 'itaque', 'asperiores', 'in', 'magni', 'fugiat', 'ut',
     'atque', 'porro', 'molestiae', 'cum', 'quam', 'fuga', 'placeat', 'modi', 'aliquid', 'libero', 'ea',
     'maxime', 'numquam', 'unde', 'voluptatem', 'nobis', 'optio', 'corrupti', 'sed', 'reiciendis',
@@ -74,36 +68,62 @@ class SocketHandler(websocket.WebSocketHandler):
         self.user_name = None
 
     def release_user_name(self):
-        available_user_names.add(self.user_name)
+        AVAILABLE_USER_NAMES.add(self.user_name)
         self.user_name = None
 
     def set_username(self, user_name=''):
-        if len(available_user_names) > 0:
-            self.user_name = available_user_names.pop()
+        if len(AVAILABLE_USER_NAMES) > 0:
+            self.user_name = AVAILABLE_USER_NAMES.pop()
             return self.user_name
         else:
             return False
 
     def error_handler(self, error_type, note=''):
+        errors = {
+            'username_error': {
+                'error': 'username_error',
+                'note': ''
+            },
+            'recipient_error': {
+                'error': 'recipient_error',
+                'note': ''
+            }
+        }
         error = errors[error_type]
         if note:
             error['note'] = note
         return error
 
     def notify_connect_user(self):
-        notification = notice['connect_user']
-        notification['user']['connect'] = self.user_name
-        for user in users:
+        notification = {
+            'user': {
+                'connect': self.user_name
+            }
+        }
+        for user in USERS:
             user.write_message(notification)
 
     def notify_disconnect_user(self):
-        notification = notice['disconnect_user']
-        notification['user']['disconnect'] = self.user_name
-        for user in users:
+        notification = {
+            'disconnect_user': {
+                'user': {
+                    'disconnect': self.user_name
+                }
+            }
+        }
+        for user in USERS:
             user.write_message(notification)
 
+    def notify_username_received(self):
+        notification = {
+            'username_received': {
+                'user_name': self.user_name
+            }
+        }
+        self.write_message(notification)
+
     def get_user_by_name(self, user_name):
-        for user in users:
+        for user in USERS:
             if user_name == user.user_name:
                 return user
         return False
@@ -129,14 +149,14 @@ class SocketHandler(websocket.WebSocketHandler):
     def open(self):
         self.set_username()
         if self.user_name:
-            users.append(self)
-            self.write_message({'user_name': self.user_name})
+            USERS.append(self)
+            self.notify_username_received()
         else:
             self.write_message(self.error_handler('username_error', 'user name not available'))
 
     def on_close(self):
         self.release_user_name()
-        users.remove(self)
+        USERS.remove(self)
         self.notify_disconnect_user()
 
     def on_message(self, data):
