@@ -3,24 +3,9 @@ import time
 import json
 from tornado import websocket, web, ioloop
 
-HOST = 'http://192.168.100.7:8888'
+HOST = 'http://192.168.100.4:8888'
 USERS = []
-NOTICE = {
-    'connect_user': {
-        'user': {
-            'connect': 'user_name'
-        }
-    },
-    'disconnect_user': {
-        'user': {
-            'disconnect': 'user_name'
-        }
-    },
-    'username_received': {
-        'user_name': 'user_name'
-    }
-}
-#ToDo: name generator or give the user the ability to specify a name
+# TODO: name generator or give the user the ability to specify a name
 AVAILABLE_USER_NAMES = {
     'voluptate', 'deleniti', 'consequuntur', 'itaque', 'asperiores', 'in', 'magni', 'fugiat', 'ut',
     'atque', 'porro', 'molestiae', 'cum', 'quam', 'fuga', 'placeat', 'modi', 'aliquid', 'libero', 'ea',
@@ -40,7 +25,7 @@ class Message:
     def __init__(self, sender, raw_message):
         self.sender = sender
         self.recipient = raw_message['recipient']
-        self.time = time.ctime()
+        self.time = time.time()
         self.content = raw_message['content']
 
     def set_sender(self, user_name):
@@ -97,18 +82,17 @@ class SocketHandler(websocket.WebSocketHandler):
     def notify_connect_user(self):
         notification = {
             'user': {
-                'connect': self.user_name
+                'connect': {'name': self.user_name}
             }
         }
         for user in USERS:
-            user.write_message(notification)
+            if user != self:
+                user.write_message(notification)
 
     def notify_disconnect_user(self):
         notification = {
-            'disconnect_user': {
-                'user': {
-                    'disconnect': self.user_name
-                }
+            'user': {
+                'disconnect': {'name': self.user_name}
             }
         }
         for user in USERS:
@@ -117,7 +101,8 @@ class SocketHandler(websocket.WebSocketHandler):
     def notify_username_received(self):
         notification = {
             'username_received': {
-                'user_name': self.user_name
+                'current_user': {'name': self.user_name},
+                'active_users': [{'name': user.user_name} for user in USERS if user != self]
             }
         }
         self.write_message(notification)
@@ -151,13 +136,14 @@ class SocketHandler(websocket.WebSocketHandler):
         if self.user_name:
             USERS.append(self)
             self.notify_username_received()
+            self.notify_connect_user()
         else:
             self.write_message(self.error_handler('username_error', 'user name not available'))
 
     def on_close(self):
-        self.release_user_name()
         USERS.remove(self)
         self.notify_disconnect_user()
+        self.release_user_name()
 
     def on_message(self, data):
         data = json.loads(data)
