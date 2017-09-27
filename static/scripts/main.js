@@ -1,7 +1,9 @@
 const USER_STYLE = 'button';
 const USER_SELECTED_STYLE = 'button selected';
 const MY_MESSAGE_STYLE = 'my-message';
-const WS_HOST = 'ws://192.168.100.4:8888/ws';
+const HOST = '192.168.100.4';
+const PORT = '8888';
+const WS_HOST = 'ws://' + HOST + ':' + PORT +'/ws';
 
 
 function handleError(error) {

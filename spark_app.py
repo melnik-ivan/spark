@@ -3,7 +3,8 @@ import time
 import json
 from tornado import websocket, web, ioloop
 
-HOST = 'http://192.168.100.4:8888'
+HOST = 'http://192.168.100.4'
+PORT = 8888
 USERS = []
 # TODO: name generator or give the user the ability to specify a name
 AVAILABLE_USER_NAMES = {
@@ -129,7 +130,11 @@ class SocketHandler(websocket.WebSocketHandler):
                 self.write_message(self.error_handler('recipient_error', 'user is offline'))
 
     def check_origin(self, origin):
-        return True
+        host = HOST + ':' + str(PORT)
+        if host == origin:
+            return True
+        else:
+            return False
 
     def open(self):
         self.set_username()
@@ -160,5 +165,5 @@ app = web.Application(
 )
 
 if __name__ == '__main__':
-    app.listen(8888)
+    app.listen(PORT)
     ioloop.IOLoop.instance().start()
