@@ -37,7 +37,7 @@ Preparatory actions:
 
 Run server:
 ```bash
-python PROJECT_PATH/app.py
+python PROJECT_PATH/spark_app.py
 ```
 For check, go to the address `YOUR_HOST:YOUR_PORT` in your browser on several tabs and try to send yourself a message
 
