@@ -3,8 +3,8 @@ import time
 import json
 from tornado import websocket, web, ioloop
 
-HOST = 'http://192.168.100.4'
-PORT = 8888
+HOST = 'http://spark-spark.193b.starter-ca-central-1.openshiftapps.com'
+PORT = 8080
 USERS = []
 # TODO: name generator or give the user the ability to specify a name
 AVAILABLE_USER_NAMES = {
