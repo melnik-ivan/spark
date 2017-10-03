@@ -2,3 +2,4 @@ env/
 .idea/
 .directory
 static/img/favicon.xcf
+__pycache__/

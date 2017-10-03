@@ -1,0 +1,2 @@
+APP_CONFIG=config.py
+GUNICORN_CMD_ARGS=-k tornado
