@@ -1,2 +1,2 @@
-gunicorn
+gunicorn==19.7.1
 tornado==4.5.2

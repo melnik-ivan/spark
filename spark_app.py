@@ -161,7 +161,3 @@ app = web.Application(
     ],
     static_path=os.path.join(os.path.dirname(__file__), "static")
 )
-
-if __name__ == '__main__':
-    app.listen(PORT)
-    ioloop.IOLoop.instance().start()
