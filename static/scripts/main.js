@@ -1,7 +1,7 @@
 const USER_STYLE = 'button';
 const USER_SELECTED_STYLE = 'button selected';
 const MY_MESSAGE_STYLE = 'my-message';
-const WS_HOST = 'ws://tornado-ws-spark-tornado-ws-spark.193b.starter-ca-central-1.openshiftapps.com/ws';
+const WS_HOST = 'ws://tornado-ws-spark-tornado-ws-spark-melnik.193b.starter-ca-central-1.openshiftapps.com/ws';
 
 
 function handleError(error) {
