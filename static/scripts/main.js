@@ -1,9 +1,7 @@
 const USER_STYLE = 'button';
 const USER_SELECTED_STYLE = 'button selected';
 const MY_MESSAGE_STYLE = 'my-message';
-const HOST = '192.168.100.4';
-const PORT = '8888';
-const WS_HOST = 'ws://' + HOST + ':' + PORT +'/ws';
+const WS_HOST = 'ws://tornado-ws-spark-tornado-ws-spark.193b.starter-ca-central-1.openshiftapps.com/ws';
 
 
 function handleError(error) {
