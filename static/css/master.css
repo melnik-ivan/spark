@@ -171,8 +171,15 @@ body {
     font-size: 0.7em;
 }
 
-@media (max-width: 500px) {
-    .row {
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .row{
         flex-flow: column;
     }
 }
