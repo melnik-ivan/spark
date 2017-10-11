@@ -67,11 +67,18 @@ body {
 .navbar {
     display: flex;
     flex-flow: column;
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+.navbar::-webkit-scrollbar {
+    width: 0;
 }
 
 .navbar .button {
     margin-bottom: 6px;
     min-width: 150px;
+    min-height: 35px;
 }
 
 .navbar .button:last-child {
@@ -106,18 +113,24 @@ body {
 .form {
     display: flex;
     flex-flow: column;
+    max-height: 450px;
 }
 
 .form .form-row {
+    flex: 1 1 400px;
     display: flex;
     flex-flow: column;
     margin-bottom: 6px;
 }
 
 .messages {
-    height: 300px;
+    flex: 1 1 400px;
     overflow: scroll;
     overflow-x: hidden;
+}
+
+.messages::-webkit-scrollbar {
+    width: 0;
 }
 
 .message {
@@ -151,6 +164,7 @@ body {
 }
 
 .message-input {
+    flex: 0 0 40px;
     display: flex;
     flex-flow: row;
     min-width: 300px;
@@ -159,7 +173,8 @@ body {
 .message-input textarea {
     flex: 5 1;
     margin-right: 6px;
-    min-height: 40px;
+    min-height: 100%;
+    max-height: 100%;
 }
 
 .message-input .button {
