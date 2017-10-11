@@ -1,7 +1,7 @@
 import os
 import time
 import json
-from tornado import websocket, web, ioloop
+from tornado import websocket, web
 
 HOST = 'http://tornado-ws-spark-tornado-ws-spark.193b.starter-ca-central-1.openshiftapps.com'
 USERS = []

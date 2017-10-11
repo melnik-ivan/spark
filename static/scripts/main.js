@@ -198,9 +198,10 @@ class MessageView {
 
 class Messenger {
     //ToDO: MessengerView
-    constructor(currentUserOptions, userClass=User, messageClass=Message) {
+    constructor(currentUserOptions, userClass=User, messageClass=Message, messengerViewClass=MessengerView) {
         this.userClass = userClass;
         this.messageClass = messageClass;
+        this.messengerView = new messengerViewClass(this);
         this.currentUser = new userClass(this, currentUserOptions);
         this.echo = new userClass(this, {'name': 'echo'});
         this.currentUser.display();
@@ -279,7 +280,19 @@ class Messenger {
             message => {
                 message.updateView(this.selectedUser, this.currentUser, this.echo);
             }
-        )
+        );
+        this.messengerView.scrollDownMessagesList();
+    }
+}
+
+class MessengerView {
+    constructor(messenger) {
+        this.messenger = messenger;
+        this.messagesList = document.getElementById("messages");
+    }
+
+    scrollDownMessagesList() {
+        this.messagesList.scrollTop = this.messagesList.scrollHeight;
     }
 }
 
