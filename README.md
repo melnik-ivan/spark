@@ -2,6 +2,10 @@
 
 A simple messenger based on WebSockets
 
+### Live example
+
+http://tornado-ws-spark-tornado-ws-spark.193b.starter-ca-central-1.openshiftapps.com
+
 ## Getting Started
 
 ### Implementation Notes
