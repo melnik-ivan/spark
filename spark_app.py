@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import html
 from tornado import websocket, web
 
 HOST = 'http://tornado-ws-spark-tornado-ws-spark.193b.starter-ca-central-1.openshiftapps.com'
@@ -27,9 +28,13 @@ class Message:
         self.recipient = raw_message['recipient']
         self.time = time.time()
         self.content = raw_message['content']
+        self.remove_html_tags()
 
     def set_sender(self, user_name):
         self.sender = user_name
+
+    def remove_html_tags(self):
+        self.content = html.escape(self.content, quote=True)
 
     def to_dict(self):
         return {
