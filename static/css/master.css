@@ -137,7 +137,7 @@ body {
     background-color: white;
     margin-bottom: 6px;
     max-width: 60%;
-    min-width: 150px;
+    /*min-width: 150px;*/
 }
 
 .message .header {
@@ -153,6 +153,10 @@ body {
 .message .header .sender {
     margin-left: 0.8em;
     margin-right: auto;
+}
+
+.message .content {
+    word-wrap: break-word;
 }
 
 .messages li {
